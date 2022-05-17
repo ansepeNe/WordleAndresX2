@@ -1,0 +1,61 @@
+create database wordleAndresX2
+go
+use wordleAndresX2
+
+
+
+create table palabras(
+
+	ID INT PRIMARY KEY,
+	NOMBRE VARCHAR(20) NOT NULL,
+
+)
+
+
+create table jugadores(
+
+	ID INT PRIMARY KEY,
+	NOMBRE VARCHAR(50) NOT NULL,
+
+)
+
+
+create table AparicionesJug(
+
+	IDPALABRA INT,
+	IDJUGADOR INT,
+	NUMAPARICIONES INT NOT NULL,
+	CONSTRAINT FKApariciones_Palabra FOREIGN KEY (IDPALABRA)
+	REFERENCES palabras(ID),
+
+	CONSTRAINT FKApariciones_Jugadores FOREIGN KEY (IDJUGADOR)
+	REFERENCES jugadores(ID),
+
+	PRIMARY KEY (IDPALABRA,IDJUGADOR)
+)
+
+create table partida(
+
+	ID INT PRIMARY KEY,
+	IDJUGADOR INT NOT NULL,
+	IDPALABRA INT NOT NULL,
+	FECHA INT NOT NULL,
+
+	CONSTRAINT FKPartida_Palabra FOREIGN KEY (IDPALABRA)
+	REFERENCES palabras(ID),
+
+	CONSTRAINT FKPartida_Jugadores FOREIGN KEY (IDJUGADOR)
+	REFERENCES jugadores(ID)
+)
+
+create table intentos(
+
+	IDPARTIDA INT,
+	IDINTENTO INT,
+	CODIF VARCHAR(20) NOT NULL,
+	CONSTRAINT FKIntentos_Partida FOREIGN KEY (IDPARTIDA)
+	REFERENCES partida(ID),
+
+	PRIMARY KEY(IDPARTIDA,IDINTENTO)
+)
+
