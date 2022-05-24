@@ -6,7 +6,7 @@ use wordleAndresX2
 
 create table palabras(
 
-	ID INT PRIMARY KEY,
+	ID INT identity(1,1) PRIMARY KEY,
 	NOMBRE VARCHAR(20) NOT NULL,
 
 )
@@ -14,7 +14,7 @@ create table palabras(
 
 create table jugadores(
 
-	ID INT PRIMARY KEY,
+	ID INT identity(1,1) PRIMARY KEY,
 	NOMBRE VARCHAR(50) NOT NULL,
 
 )
@@ -36,7 +36,7 @@ create table AparicionesJug(
 
 create table partida(
 
-	ID INT PRIMARY KEY,
+	ID INT identity(1,1) PRIMARY KEY,
 	
 	IDPALABRA INT NOT NULL,
 	FECHA INT NOT NULL,
