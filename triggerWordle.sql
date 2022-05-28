@@ -12,6 +12,8 @@
 create or alter procedure ProcedureIntentos @IDPARTIDA INT ,@IDINTENTO INT, @IDJUGADOR INT
 AS
 BEGIN
+
+
 declare @palabraIntentada varchar(20)
 	declare @i int
 	declare @j int
@@ -25,7 +27,7 @@ declare @palabraIntentada varchar(20)
 						 where (select idpartida from INTENTOS WHERE @IDPARTIDA = IDPARTIDA AND @IDINTENTO = IDINTENTO AND @IDJUGADOR = IDJUGADOR) = p.ID)
 	set @i = 0
 	set @j = 0
-	SET @palabraIntentada = (SELECT PALABRA_INTENTADA from intentos)
+	--SET @palabraIntentada = (SELECT PALABRA_INTENTADA from intentos)
 	--calcular el resultado 
 	while(@i<len(@palabraIntentada))
 	begin
@@ -60,7 +62,7 @@ END
 
 
 GO
-CREATE or alter TRIGGER TR_intentos
+CREATE or alter TRIGGER TR_intentos 
 on intentos
 for INSERT
 AS
