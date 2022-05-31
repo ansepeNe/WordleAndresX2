@@ -21,7 +21,7 @@ begin
 		declare @idPalabra int
 		if(select COUNT(*) from partida where IDJUGADOR = @idJugador and FECHA=Convert(date, getdate()))<1
 				begin
-					set @idpalabra =(select top 1 id  from palabras p
+					set @idpalabra =(select TOP 1 ID  from palabras p
 					left join AparicionesJug a  on a.IDPALABRA=p.ID
 					where IDJUGADOR is null or IDJUGADOR = @idJugador
 					order by NUMAPARICIONES asc)
@@ -74,16 +74,16 @@ begin
 						begin
 							if(SUBSTRING(@palabraIntentada,@i,1) = SUBSTRING(@palabraBuena,@i,1))
 							begin
-								set @codif=@codif+'2'
+								set @codif=@codif+'V'
 							end
 							else
 							begin
-								set @codif=@codif+'1'
+								set @codif=@codif+'A'
 							end
 						end
 						else if(@j = len(@palabraBuena))
 						begin
-							set @codif=@codif+'0'		
+							set @codif=@codif+'G'		
 						end
 					end
 					set @j = 0
@@ -91,14 +91,13 @@ begin
 
 				--//
 
-				PRINT(@palabraBuena)
 				insert into intentos (IDPARTIDA, IDINTENTO, CODIF, PALABRA_INTENTADA) VALUES(@idPartida, @INTENTOS + 1, @codif, @palabraIntentada )
 				PRINT(CONCAT('INTENTO Nº: ',(@INTENTOS + 1)))
 				PRINT(@palabraIntentada)
 				PRINT(@CODIF)
-				IF(@INTENTOS+1=5 AND  @palabraIntentada <> @PalabraBuena)
+				IF(@INTENTOS+1<=5 AND  @palabraIntentada = @PalabraBuena)
 					BEGIN
-						print('Numero maximo de intentos alcanzados la palabra era ' + @PalabraBuena)
+						print('PALABRA ACERTADA')
 					END
 			end
 			ELSE
@@ -124,4 +123,23 @@ select * from intentos
 insert into AparicionesJug values(2,4,1)
 
 
-exec Tr_Jugar 'ANSEEPE','POLLA'
+exec Tr_Jugar 'bernatf','penal'
+
+select
+	substring(PALABRA_INTENTADA,1,1) as pal1,
+	substring(PALABRA_INTENTADA,2,1) as pal2,
+	substring(PALABRA_INTENTADA,3,1) as pal3,
+	substring(PALABRA_INTENTADA,4,1) as pal4,
+	substring(PALABRA_INTENTADA,5,1) as pal5,
+	substring(CODIF,1,1) as res1,
+	substring(CODIF,2,1) as res2,
+	substring(CODIF,3,1) as res3,
+	substring(CODIF,4,1) as res4,
+	substring(CODIF,5,1) as res5,pa.nombre as palabradehoy from intentos i
+	 inner join partida p on p.id=i.IDPARTIDA
+	inner join jugadores j on p.IDJUGADOR=j.id
+	inner join palabras pa on p.IDPALABRA=pa.ID
+	where j.NICK = '" . $a . "' and p.fecha = cast(getdate() as date)
+
+
+	select substring(PALABRA_INTENTADA,1,1) as pal1, substring(PALABRA_INTENTADA,2,1) as pal2, substring(PALABRA_INTENTADA,3,1) as pal3, substring(PALABRA_INTENTADA,4,1) as pal4, substring(PALABRA_INTENTADA,5,1) as pal5, substring(CODIF,1,1) as res1, substring(CODIF,2,1) as res2, substring(CODIF,3,1) as res3, substring(CODIF,4,1) as res4, substring(CODIF,5,1) as res5,pa.nombre as palabradehoy from intentos i inner join partida p on p.id=i.IDPARTIDA inner join jugadores j on p.IDJUGADOR=j.id inner join palabras pa on p.IDPALABRA=pa.ID where j.NICK = 'tq3nrudo1r1k7cu2spob2lpd40' and p.fecha = cast(getdate() as date)
